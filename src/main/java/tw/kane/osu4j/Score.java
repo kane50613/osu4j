@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 public class Score {
     private final JSONObject object;
 
-    String mapId, userId;
-    long score;
-    boolean isPerfect;
-    Mod[] mods;
-    Rank rank;
-    Date playAt;
+    public String mapId, userId;
+    public long score;
+    public boolean isPerfect;
+    public Mod[] mods;
+    public Rank rank;
+    public Date playAt;
 
-    Count counts;
+    public Count counts;
 
     public Score(JSONObject object) {
         this.object = object;

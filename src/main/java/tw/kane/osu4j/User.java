@@ -5,16 +5,17 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private final JSONObject object;
 
-    String id, name, country;
-    float level, accuracy;
-    Date joinAt;
-    Count counts;
-    PlayScore scores;
-    PerformancePoint pp;
+    public String id, name, country;
+    public float level, accuracy;
+    public Date joinAt;
+    public Count counts;
+    public PlayScore scores;
+    public PerformancePoint pp;
 
 
     public User(JSONObject object) {

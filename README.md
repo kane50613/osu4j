@@ -1,5 +1,5 @@
 # osu!4J
-The osu API client written in Java
+The osu API wrapper written in Java
 
 ***
 

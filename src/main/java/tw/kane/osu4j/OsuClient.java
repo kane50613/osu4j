@@ -57,7 +57,7 @@ public class OsuClient {
      * @throws InvalidTokenException if token provided to OsuClient wrong
      * @throws NotFoundException if user not found
      */
-    public List<Score> getUserRecent(String id) throws IOException, InvalidTokenException, NotFoundException {
+    public Score[] getUserRecent(String id) throws IOException, InvalidTokenException, NotFoundException {
         Request request = new Request.Builder()
                 .url(String.format("https://osu.ppy.sh/api/get_user_recent?k=%s&u=%s",
                         token,
@@ -79,7 +79,41 @@ public class OsuClient {
             resultArray.toList().forEach(score ->
                     scores.add(new Score((JSONObject) score))
             );
-            return scores;
+            return scores.toArray(scores.toArray(new Score[scores.size()]));
+        }
+        return null;
+    }
+
+    /**
+     * get user's best plays
+     * @param id user's name or id
+     * @return Score[]
+     * @throws InvalidTokenException if token provided to OsuClient wrong
+     * @throws NotFoundException if user not found
+     */
+    public Score[] getUserBest(String id) throws IOException, InvalidTokenException, NotFoundException {
+        Request request = new Request.Builder()
+                .url(String.format("https://osu.ppy.sh/api/get_user_best?k=%s&u=%s",
+                        token,
+                        id
+                ))
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        String responseString = response.body().string();
+        if(responseString.startsWith("{")) {
+            JSONObject result = new JSONObject(responseString);
+            if(!result.isNull("error"))
+                throw new InvalidTokenException(result.getString("error"));
+        }
+        else {
+            JSONArray resultArray = new JSONArray(responseString);
+            if(resultArray.length() == 0)
+                throw new NotFoundException();
+            List<Score> scores = new LinkedList<>();
+            resultArray.toList().forEach(score ->
+                    scores.add(new Score((JSONObject) score))
+            );
+            return scores.toArray(scores.toArray(new Score[scores.size()]));
         }
         return null;
     }
