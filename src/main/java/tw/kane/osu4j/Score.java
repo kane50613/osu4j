@@ -118,7 +118,11 @@ public class Score {
         SH("S+"),
         SS("SS"),
         S("S"),
-        A("A");
+        A("A"),
+        B("B"),
+        C("C"),
+        D("D"),
+        F("F");
 
         public final String name;
 
