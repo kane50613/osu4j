@@ -1,7 +1,10 @@
 package tw.kane.osu4j;
 
 import org.json.JSONObject;
+import tw.kane.osu4j.Exception.InvalidTokenException;
+import tw.kane.osu4j.Exception.NotFoundException;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -39,6 +42,15 @@ public class Score {
         mods = Mod.parse(_mods);
 
         counts = new Count();
+    }
+
+    public Beatmap getBeatmap() {
+        //TODO return beatmap
+        return null;
+    }
+
+    public User getUser() throws NotFoundException, InvalidTokenException, IOException {
+        return OsuClient.client.getUser(userId, true);
     }
 
     private class Count {
