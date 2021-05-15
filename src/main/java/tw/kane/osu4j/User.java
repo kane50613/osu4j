@@ -2,26 +2,38 @@ package tw.kane.osu4j;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class User {
     private final JSONObject object;
 
     String id, name, country;
     float level, accuracy;
+    Date joinAt;
     Count counts;
-    Score scores;
+    PlayScore scores;
     PerformancePoint pp;
+
 
     public User(JSONObject object) {
         this.object = object;
-        id = object.isNull("user_id") ? "unknown" : object.getString("user_id");
-        name = object.isNull("username") ? "unknown" : object.getString("username");
-        country = object.isNull("country") ? "unknown" : object.getString("country");
+        id = object.isNull("user_id") ? null : object.getString("user_id");
+        name = object.isNull("username") ? null : object.getString("username");
+        country = object.isNull("country") ? null : object.getString("country");
 
         level = object.isNull("level") ? 0 : Float.parseFloat(object.getString("level"));
         accuracy = object.isNull("accuracy") ? 0 : Float.parseFloat(object.getString("accuracy"));
 
+        try {
+            joinAt = object.isNull("join_date") ? null : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(object.getString("join_date"));
+        } catch (ParseException e) {
+            joinAt = null;
+        }
+
         counts = new Count();
-        scores = new Score();
+        scores = new PlayScore();
         pp = new PerformancePoint();
     }
 
@@ -44,10 +56,10 @@ public class User {
         }
     }
 
-    private class Score {
+    private class PlayScore {
         int ranked, total;
 
-        public Score() {
+        public PlayScore() {
             ranked = object.isNull("ranked_score") ? 0 : Integer.parseInt(object.getString("ranked_score"));
             total = object.isNull("total_score") ? 0 : Integer.parseInt(object.getString("total_score"));
         }
