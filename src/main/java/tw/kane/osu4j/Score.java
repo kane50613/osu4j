@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class Score {
     private final JSONObject object;
 
-    public String mapId, userId;
+    public String mapId, userId, scoreId;
     public long score;
     public boolean isPerfect;
     public Mod[] mods;
@@ -25,6 +25,7 @@ public class Score {
         isPerfect = !object.isNull("perfect") && Boolean.parseBoolean(object.getString("perfect"));
         mapId = object.isNull("beatmap_id") ? null : object.getString("beatmap_id");
         userId = object.isNull("user_id") ? null : object.getString("user_id");
+        scoreId = object.isNull("score_id") ? null : object.getString("score_id");
         rank = object.isNull("rank") ? null : Rank.valueOf(object.getString("rank"));
         score = object.isNull("score") ? 0 : Long.parseLong(object.getString("score"));
 
