@@ -16,7 +16,7 @@ try {
 ```
 
 ### Install
-replace `VERSION` with current version [![version][]]
+replace `VERSION` with current version ![release](https://img.shields.io/github/v/release/Gary50613/osu4j?color=dark_green&include_prereleases)
 
 ```xml
 <dependency>
