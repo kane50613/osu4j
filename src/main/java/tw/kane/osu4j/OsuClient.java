@@ -10,15 +10,17 @@ import tw.kane.osu4j.Exception.NotFoundException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class OsuClient {
     private final String token;
     private final OkHttpClient httpClient = new OkHttpClient();
 
+    static OsuClient client;
+
     public OsuClient(String token) {
         this.token = token;
+        client = this;
     }
 
     /**
@@ -28,7 +30,10 @@ public class OsuClient {
      * @throws InvalidTokenException if token provided to OsuClient wrong
      * @throws NotFoundException if user not found
      */
-    public User getUser(String id) throws IOException, InvalidTokenException, NotFoundException {
+    public User getUser(String id, boolean allowCached) throws IOException, InvalidTokenException, NotFoundException {
+        if(allowCached && Cache.userCache.containsKey(id))
+            return Cache.userCache.get(id);
+
         Request request = new Request.Builder()
                 .url(String.format("https://osu.ppy.sh/api/get_user?k=%s&u=%s",
                         token,
@@ -43,10 +48,12 @@ public class OsuClient {
                 throw new InvalidTokenException(result.getString("error"));
         }
         else {
-            JSONArray user = new JSONArray(responseString);
-            if(user.length() == 0)
+            JSONArray userArray = new JSONArray(responseString);
+            if(userArray.length() == 0)
                 throw new NotFoundException();
-            return new User((JSONObject) user.get(0));
+            User user = new User(userArray.getJSONObject(0));
+            Cache.userCache.put(id, user);
+            return user;
         }
         return null;
     }

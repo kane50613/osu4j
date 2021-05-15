@@ -1,7 +1,10 @@
 package tw.kane.osu4j;
 
 import org.json.JSONObject;
+import tw.kane.osu4j.Exception.InvalidTokenException;
+import tw.kane.osu4j.Exception.NotFoundException;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +38,18 @@ public class User {
         counts = new Count();
         scores = new PlayScore();
         pp = new PerformancePoint();
+    }
+
+    public Score[] getBest() throws NotFoundException, InvalidTokenException, IOException {
+        if(OsuClient.client == null)
+            throw new InvalidTokenException("client not init first");
+        return OsuClient.client.getUserBest(id);
+    }
+
+    public Score[] getRecent() throws NotFoundException, InvalidTokenException, IOException {
+        if(OsuClient.client == null)
+            throw new InvalidTokenException("client not init first");
+        return OsuClient.client.getUserRecent(id);
     }
 
     private class Count {

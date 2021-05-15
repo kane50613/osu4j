@@ -124,7 +124,7 @@ public class Score {
         D("D"),
         F("F");
 
-        public final String name;
+        private final String name;
 
         Rank(String name) {
             this.name = name;
