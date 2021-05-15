@@ -6,7 +6,7 @@
 
     <groupId>tw.kane</groupId>
     <artifactId>osu4j</artifactId>
-    <version>v1.1.1</version>
+    <version>v1.1.2</version>
 
     <distributionManagement>
         <repository>

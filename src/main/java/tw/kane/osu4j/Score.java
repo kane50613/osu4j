@@ -41,14 +41,14 @@ public class Score {
     }
 
     private class Count {
-        int _300, _100, _50, miss, maxCombo;
+        long _300, _100, _50, miss, maxCombo;
 
         public Count() {
-            _300 = object.isNull("count300") ? 0 : Integer.parseInt(object.getString("count300"));
-            _100 = object.isNull("count100") ? 0 : Integer.parseInt(object.getString("count100"));
-            _50 = object.isNull("count50") ? 0 : Integer.parseInt(object.getString("count50"));
-            miss = object.isNull("countmiss") ? 0 : Integer.parseInt(object.getString("countmiss"));
-            maxCombo = object.isNull("maxcombo") ? 0 : Integer.parseInt(object.getString("maxcombo"));
+            _300 = object.isNull("count300") ? 0 : Long.parseLong(object.getString("count300"));
+            _100 = object.isNull("count100") ? 0 : Long.parseLong(object.getString("count100"));
+            _50 = object.isNull("count50") ? 0 : Long.parseLong(object.getString("count50"));
+            miss = object.isNull("countmiss") ? 0 : Long.parseLong(object.getString("countmiss"));
+            maxCombo = object.isNull("maxcombo") ? 0 : Long.parseLong(object.getString("maxcombo"));
         }
     }
 
