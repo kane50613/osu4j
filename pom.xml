@@ -6,12 +6,12 @@
 
     <groupId>tw.kane</groupId>
     <artifactId>osu4j</artifactId>
-    <version>v1.1.3</version>
+    <version>v1.1.4</version>
 
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>osu!4J - The osu API client written in Java</name>
+            <name>osu!4J - The osu API wrapper written in Java</name>
             <url>https://maven.pkg.github.com/Gary50613/osu4j</url>
         </repository>
     </distributionManagement>

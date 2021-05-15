@@ -9,6 +9,7 @@ import tw.kane.osu4j.Exception.InvalidTokenException;
 import tw.kane.osu4j.Exception.NotFoundException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -75,10 +76,10 @@ public class OsuClient {
             JSONArray resultArray = new JSONArray(responseString);
             if(resultArray.length() == 0)
                 throw new NotFoundException();
-            List<Score> scores = new LinkedList<>();
-            resultArray.toList().forEach(score ->
-                    scores.add(new Score((JSONObject) score))
-            );
+            List<Score> scores = new ArrayList<>();
+            for (int i = 0; i < resultArray.length(); i++) {
+                scores.add(new Score(resultArray.getJSONObject(i)));
+            }
             return scores.toArray(scores.toArray(new Score[scores.size()]));
         }
         return null;
@@ -109,10 +110,10 @@ public class OsuClient {
             JSONArray resultArray = new JSONArray(responseString);
             if(resultArray.length() == 0)
                 throw new NotFoundException();
-            List<Score> scores = new LinkedList<>();
-            resultArray.toList().forEach(score ->
-                    scores.add(new Score((JSONObject) score))
-            );
+            List<Score> scores = new ArrayList<>();
+            for (int i = 0; i < resultArray.length(); i++) {
+                scores.add(new Score(resultArray.getJSONObject(i)));
+            }
             return scores.toArray(scores.toArray(new Score[scores.size()]));
         }
         return null;
