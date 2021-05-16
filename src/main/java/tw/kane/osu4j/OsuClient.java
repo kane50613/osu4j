@@ -28,6 +28,8 @@ public class OsuClient {
     /**
      * get user info
      * @param id user's name or id
+     * @param mode get user specify mode's info
+     * @param allowCached allow cached for faster response
      * @return User
      * @throws InvalidTokenException if token provided to OsuClient wrong
      * @throws NotFoundException if user not found
@@ -58,6 +60,9 @@ public class OsuClient {
     /**
      * get user's recent plays in 24hrs
      * @param id user's name or id
+     * @param type score type best or recent
+     * @param includeFails whether include failed scores
+     * @param mode get specify mode's score
      * @return User
      * @throws InvalidTokenException if token provided to OsuClient wrong
      * @throws NotFoundException if user not found

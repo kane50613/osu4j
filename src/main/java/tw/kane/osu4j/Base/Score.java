@@ -1,18 +1,14 @@
 package tw.kane.osu4j.Base;
 
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 import org.json.JSONObject;
-import tw.kane.osu4j.Exception.InvalidTokenException;
-import tw.kane.osu4j.Exception.NotFoundException;
-import tw.kane.osu4j.OsuClient;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Score {
-    private final JSONObject object;
+    private final DocumentContext object;
 
     public String mapId, userId, scoreId;
     public long score;
@@ -23,46 +19,16 @@ public class Score {
 
     public Count counts;
 
-    public Score(JSONObject object) {
-        this.object = object;
-
-        isPerfect = !object.isNull("perfect") && Boolean.parseBoolean(object.getString("perfect"));
-        mapId = object.isNull("beatmap_id") ? null : object.getString("beatmap_id");
-        userId = object.isNull("user_id") ? null : object.getString("user_id");
-        scoreId = object.isNull("score_id") ? null : object.getString("score_id");
-        rank = object.isNull("rank") ? null : Rank.valueOf(object.getString("rank"));
-        score = object.isNull("score") ? 0 : Long.parseLong(object.getString("score"));
-
-        try {
-            playAt = object.isNull("date") ? null : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(object.getString("date"));
-        } catch (ParseException e) {
-            playAt = null;
-        }
-
-        long _mods = object.isNull("enabled_mods") ? 0 : Long.parseLong(object.getString("enabled_mods"));
-        mods = Mod.parse(_mods);
+    public Score(JSONObject json) {
+        this.object = JsonPath.parse(json.toString());
 
         counts = new Count();
     }
-
-    public Beatmap getBeatmap() {
-        //TODO return beatmap
-        return null;
-    }
-
-//    public User getUser() throws NotFoundException, InvalidTokenException, IOException {
-//        return OsuClient.client.getUser(userId, true);
-//    }
-
-    private class Count {
-        long _300, _100, _50, miss, maxCombo;
+    public class Count {
+        public long _300, _100, _50, miss, maxCombo;
 
         public Count() {
-            _300 = object.isNull("count300") ? 0 : Long.parseLong(object.getString("count300"));
-            _100 = object.isNull("count100") ? 0 : Long.parseLong(object.getString("count100"));
-            _50 = object.isNull("count50") ? 0 : Long.parseLong(object.getString("count50"));
-            miss = object.isNull("countmiss") ? 0 : Long.parseLong(object.getString("countmiss"));
-            maxCombo = object.isNull("maxcombo") ? 0 : Long.parseLong(object.getString("maxcombo"));
+
         }
     }
 

@@ -3,20 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>tw.kane</groupId>
   <artifactId>osu4j</artifactId>
-  <version>v1.2</version>
+  <version>v2</version>
   <build>
     <plugins>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <mainClass>tw.kane.osu4j.Osu</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.2.4</version>
@@ -39,7 +28,7 @@
     </repository>
   </distributionManagement>
   <properties>
-    <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
+    <maven.compiler.source>8</maven.compiler.source>
   </properties>
 </project>
