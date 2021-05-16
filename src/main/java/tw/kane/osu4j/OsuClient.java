@@ -45,20 +45,14 @@ public class OsuClient {
                 .build();
         Response response = httpClient.newCall(request).execute();
         String responseString = response.body().string();
-        if(responseString.startsWith("{")) {
-            JSONObject result = new JSONObject(responseString);
-            if(!result.isNull("authentication"))
-                throw new InvalidTokenException("token wrong");
-        }
-        else {
-            JSONArray userArray = new JSONArray(responseString);
-            if(userArray.length() == 0)
-                throw new NotFoundException();
-            User user = new User(userArray.getJSONObject(0).toString());
-            Cache.userCache.put(id, user);
-            return user;
-        }
-        return null;
+        JSONObject result = new JSONObject(responseString);
+        if(!result.isNull("authentication"))
+            throw new InvalidTokenException("token wrong");
+        if(!result.isNull("error"))
+            throw new NotFoundException();
+        User user = new User(result);
+        Cache.userCache.put(id, user);
+        return user;
     }
 
     /**

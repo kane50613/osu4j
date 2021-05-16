@@ -1,6 +1,7 @@
 package tw.kane.osu4j;
 
 import com.jayway.jsonpath.DocumentContext;
+import org.json.JSONObject;
 
 public class JSON {
 //    public static boolean checkExist(JSONObject object, String path) {
@@ -16,9 +17,9 @@ public class JSON {
     public static <T> T get(DocumentContext json, String path, Class<T> _class, T whenNull) {
         T obj;
         try {
-             obj = json.read(path, _class);
+            obj = json.read(path, _class);
         } catch (Exception e) {
-            return whenNull;
+            obj = whenNull;
         }
         return obj;
     }

@@ -30,7 +30,7 @@ public class Oauth {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(
                 new Tasker(),
-                new Date(),
+                86300000L,
                 86300000L
         );
     }
@@ -57,11 +57,8 @@ public class Oauth {
         Response response = OsuClient.httpClient.newCall(request).execute();
         String responseString = response.body().string();
         JSONObject responseJson = new JSONObject(responseString);
-        System.out.println(responseString);
-        if(!responseJson.isNull("access_token")) {
+        if(!responseJson.isNull("access_token"))
             token = responseJson.getString("access_token");
-            System.out.println(token);
-        }
     }
 
     public String getToken() {
