@@ -6,7 +6,7 @@ The osu API wrapper written in Java
 ### Example
 
 ```java
-OsuClient client = new OsuClient("API_TOKEN");
+OsuClient client = new OsuClient("CLIENT_ID", "CLIENT_SECRET");
 try {
         User user = client.getUser("Gary50613");
         System.out.println(user.name);
