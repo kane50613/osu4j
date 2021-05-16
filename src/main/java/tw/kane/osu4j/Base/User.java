@@ -1,33 +1,38 @@
-package tw.kane.osu4j;
+package tw.kane.osu4j.Base;
 
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 import org.json.JSONObject;
-import tw.kane.osu4j.Exception.InvalidTokenException;
-import tw.kane.osu4j.Exception.NotFoundException;
+import tw.kane.osu4j.JSON;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class User {
-    private final JSONObject object;
+    private DocumentContext object;
 
     public String id, name, country;
-    public float level, accuracy;
+    public int level;
+    public float accuracy;
     public Date joinAt;
     public Count counts;
     public PlayScore scores;
     public PerformancePoint pp;
 
+    boolean isActive, isBot, isDeleted, isOnline, isSupporter, hasSupported;
 
-    public User(JSONObject object) {
-        this.object = object;
-        id = object.isNull("user_id") ? null : object.getString("user_id");
-        name = object.isNull("username") ? null : object.getString("username");
-        country = object.isNull("country") ? null : object.getString("country");
 
-        level = object.isNull("level") ? 0 : Float.parseFloat(object.getString("level"));
-        accuracy = object.isNull("accuracy") ? 0 : Float.parseFloat(object.getString("accuracy"));
+    public User(String json) {
+        this.object = JsonPath.parse(json);
+        id = JSON.get(object, "$.id", String.class, null);
+        name = JSON.get(object, "$.username", String.class, null);
+        country = JSON.get(object, "$.country.name", String.class,
+                JSON.get(object, "$.country_code", String.class, null)
+        );
+
+        level = JSON.get(object, "$.statistics.level.current", Integer.class, 0);
+        accuracy = JSON.get(object, "$.hit_accuracy", Float.class, 0f);
 
         try {
             joinAt = object.isNull("join_date") ? null : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(object.getString("join_date"));
@@ -38,18 +43,6 @@ public class User {
         counts = new Count();
         scores = new PlayScore();
         pp = new PerformancePoint();
-    }
-
-    public Score[] getBest() throws NotFoundException, InvalidTokenException, IOException {
-        if(OsuClient.client == null)
-            throw new InvalidTokenException("client not init first");
-        return OsuClient.client.getUserBest(id);
-    }
-
-    public Score[] getRecent() throws NotFoundException, InvalidTokenException, IOException {
-        if(OsuClient.client == null)
-            throw new InvalidTokenException("client not init first");
-        return OsuClient.client.getUserRecent(id);
     }
 
     private class Count {

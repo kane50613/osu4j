@@ -1,8 +1,9 @@
-package tw.kane.osu4j;
+package tw.kane.osu4j.Base;
 
 import org.json.JSONObject;
 import tw.kane.osu4j.Exception.InvalidTokenException;
 import tw.kane.osu4j.Exception.NotFoundException;
+import tw.kane.osu4j.OsuClient;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -49,9 +50,9 @@ public class Score {
         return null;
     }
 
-    public User getUser() throws NotFoundException, InvalidTokenException, IOException {
-        return OsuClient.client.getUser(userId, true);
-    }
+//    public User getUser() throws NotFoundException, InvalidTokenException, IOException {
+//        return OsuClient.client.getUser(userId, true);
+//    }
 
     private class Count {
         long _300, _100, _50, miss, maxCombo;
