@@ -1,6 +1,5 @@
 package tw.kane.osu4j.Base;
 
-import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.json.JSONObject;
@@ -13,10 +12,10 @@ import java.util.Date;
 public class User {
     private final DocumentContext object;
 
-    public String id, name, country, avatarUrl;
+    public String id, name, country, countryCode, avatarUrl;
     public int level;
     public float accuracy;
-    public Date joinAt;
+    public Date joinAt, lastVisit;
     public Count counts;
     public PlayScore scores;
     public PerformancePoint pp;
@@ -26,12 +25,20 @@ public class User {
 
     public User(JSONObject json) {
         object = JsonPath.parse(json.toString());
+        init();
+    }
+
+    public User(String json) {
+        object = JsonPath.parse(json);
+        init();
+    }
+
+    private void init() {
         id = String.valueOf(JSON.get(object, "$.id", Integer.class, null));
         avatarUrl = JSON.get(object, "$.avatar_url", String.class, null);
         name = JSON.get(object, "$.username", String.class, null);
-        country = JSON.get(object, "$.country.name", String.class,
-                JSON.get(object, "$.country_code", String.class, null)
-        );
+        country = JSON.get(object, "$.country.name", String.class, null);
+        countryCode = JSON.get(object, "$.country_code", String.class, null);
         level = JSON.get(object, "$.statistics.level.current", Integer.class, 0);
         accuracy = JSON.get(object, "$.hit_accuracy", Float.class, 0f);
 
@@ -44,9 +51,8 @@ public class User {
 
         try {
             joinAt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(JSON.get(object, "$.join_date", String.class, null));
-        } catch (ParseException | NullPointerException e) {
-            joinAt = null;
-        }
+            lastVisit = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(JSON.get(object, "$.last_visit", String.class, null));
+        } catch (ParseException | NullPointerException ignored) { }
 
         counts = new Count();
         scores = new PlayScore();
@@ -77,10 +83,11 @@ public class User {
     }
 
     public class PerformancePoint {
-        public long rank, countryRank, pp;
+        public long rank, countryRank;
+        public float pp;
 
         public PerformancePoint() {
-            pp = JSON.get(object, "$.statistics.pp", Long.class, 0L);
+            pp = JSON.get(object, "$.statistics.pp", Float.class, 0f);
             rank = JSON.get(object, "$.statistics.rank.global", Long.class, 0L);
             countryRank = JSON.get(object, "$.statistics.rank.country", Long.class, 0L);
         }

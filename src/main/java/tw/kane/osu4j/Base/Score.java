@@ -3,92 +3,70 @@ package tw.kane.osu4j.Base;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.json.JSONObject;
+import tw.kane.osu4j.JSON;
+import tw.kane.osu4j.Mode;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Score {
+    private final JSONObject _json;
     private final DocumentContext object;
 
-    public String mapId, userId, scoreId;
+    public String scoreId;
     public long score;
+    public float accuracy, pp;
     public boolean isPerfect;
-    public Mod[] mods;
+    public String[] mods;
     public Rank rank;
     public Date playAt;
+    public Mode mode;
 
     public Count counts;
+    public User user;
+    public Beatmap beatmap;
 
     public Score(JSONObject json) {
-        this.object = JsonPath.parse(json.toString());
-
-        counts = new Count();
+        _json = json;
+        object = JsonPath.parse(json.toString());
+        init();
     }
+
+    public Score(String json) {
+        _json = new JSONObject(json);
+        object = JsonPath.parse(json);
+        init();
+    }
+
+    public void init() {
+        scoreId = String.valueOf(JSON.get(object, "$.id", Integer.class, 0));
+        score = JSON.get(object, "$.score", Long.class, 0L);
+        isPerfect = JSON.get(object, "$.perfect", Boolean.class, false);
+        accuracy = JSON.get(object, "$.accuracy", Float.class, 0f);
+        pp = JSON.get(object, "$.pp", Float.class, 0f);
+        mode = Mode.valueOf(JSON.get(object, "$.mode", String.class, "osu").toUpperCase());
+        mods = _json.getJSONArray("mods").toList().toArray(new String[0]);
+
+        try {
+            playAt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(JSON.get(object, "$.created_at", String.class, null));
+        } catch (ParseException ignored) { }
+
+        rank = Rank.valueOf(JSON.get(object, "$.rank", String.class, "F"));
+        counts = new Count();
+        beatmap = new Beatmap(_json.getJSONObject("beatmap"));
+        user = new User(_json.getJSONObject("user"));
+    }
+
     public class Count {
         public long _300, _100, _50, miss, maxCombo;
 
         public Count() {
-
-        }
-    }
-
-    public enum Mod {
-        NoFail(1),
-        Easy(2),
-        TouchDevice(4),
-        Hidden(8),
-        HardRock(16),
-        SuddenDeath(32),
-        DoubleTime(64),
-        Relax(128),
-        HalfTime(256),
-        Nightcore(512),
-        Flashlight(1024),
-        Autoplay(2048),
-        SpunOut(4096),
-        AutoPilot(8192),
-        Perfect(16384),
-        Key4(32768),
-        Key5(65536),
-        Key6(131072),
-        Key7(262144),
-        Key8(524288),
-        FadeIn(1048576),
-        Random(2097152),
-        Cinema(4194304),
-        Target(8388608),
-        Key9(16777216),
-        KeyCoop(33554432),
-        Key1(67108864),
-        Key3(134217728),
-        Key2(268435456),
-        ScoreV2(536870912),
-        Mirror(1073741824);
-
-        public final long bit;
-
-        Mod(int bit) {
-            this.bit = bit;
-        }
-
-        public static Mod[] parse(long bit) {
-            List<Mod> values = Arrays.stream(values())
-                    .sorted(Comparator.comparingLong(Mod::getBit))
-                    .sorted(Comparator.reverseOrder())
-                    .collect(Collectors.toList());
-            List<Mod> mods = new ArrayList<>();
-            while(bit > 0) for(Mod mod : values) {
-                if(mod.bit <= bit) {
-                    mods.add(mod);
-                    bit -= mod.bit;
-                }
-            }
-
-            return mods.toArray(new Mod[mods.size()]);
-        }
-
-        public long getBit() {
-            return bit;
+            _300 = JSON.get(object, "$.statistics.count_300", Long.class, 0L);
+            _100 = JSON.get(object, "$.statistics.count_100", Long.class, 0L);
+            _50 = JSON.get(object, "$.statistics.count_50", Long.class, 0L);
+            miss = JSON.get(object, "$.statistics.count_miss", Long.class, 0L);
+            maxCombo = JSON.get(object, "$.max_combo", Long.class, 0L);
         }
     }
 

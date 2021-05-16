@@ -6,7 +6,7 @@ public enum Mode {
     CATCH("fruits"),
     TAIKO("taiko");
 
-    private String name;
+    private final String name;
 
     Mode(String name) {
         this.name = name;

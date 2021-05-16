@@ -75,13 +75,14 @@ public class OsuClient {
                         includeFails ? 1 : 0,
                         mode.getName()
                 ))
+                .headers(oauth.header())
                 .build();
         Response response = httpClient.newCall(request).execute();
         String responseString = response.body().string();
         if(responseString.startsWith("{")) {
             JSONObject result = new JSONObject(responseString);
             if(!result.isNull("authentication"))
-                throw new InvalidTokenException(result.getString("token wrong"));
+                throw new InvalidTokenException("token wrong");
         }
         else {
             JSONArray resultArray = new JSONArray(responseString);
@@ -91,7 +92,7 @@ public class OsuClient {
             for (int i = 0; i < resultArray.length(); i++) {
                 scores.add(new Score(resultArray.getJSONObject(i)));
             }
-            return scores.toArray(scores.toArray(new Score[scores.size()]));
+            return scores.toArray(new Score[0]);
         }
         return null;
     }
