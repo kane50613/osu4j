@@ -26,6 +26,7 @@ public class Score {
     public Count counts;
     public User user;
     public Beatmap beatmap;
+    public BeatmapSet beatmapSet;
 
     public Score(JSONObject json) {
         _json = json;
@@ -55,6 +56,7 @@ public class Score {
         rank = Rank.valueOf(JSON.get(object, "$.rank", String.class, "F"));
         counts = new Count();
         beatmap = new Beatmap(_json.getJSONObject("beatmap"));
+        beatmapSet = new BeatmapSet(_json.getJSONObject("beatmapset"));
         user = new User(_json.getJSONObject("user"));
     }
 
