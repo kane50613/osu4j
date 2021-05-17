@@ -27,4 +27,4 @@ replace `VERSION` with current version [![release](https://img.shields.io/github
 ```
 
 ### Support
-- [Discord](https://discord.gg/ct2ufag)
+- [Discord](https://discord.gg/ct2ufag) [![Discord](https://img.shields.io/discord/600363644991176822.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/ct2ufag)
