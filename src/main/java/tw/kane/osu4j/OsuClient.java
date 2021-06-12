@@ -5,6 +5,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import tw.kane.osu4j.Base.Beatmap;
 import tw.kane.osu4j.Base.Score;
 import tw.kane.osu4j.Base.User;
 import tw.kane.osu4j.Exception.InvalidTokenException;
@@ -38,16 +39,8 @@ public class OsuClient {
         if(allowCached && Cache.userCache.containsKey(id))
             return Cache.userCache.get(id);
 
-        Request request = new Request.Builder()
-                .url(String.format("https://osu.ppy.sh/api/v2/users/%s/%s",
-                        id,
-                        mode.getName()
-                ))
-                .headers(oauth.header())
-                .build();
-        Response response = httpClient.newCall(request).execute();
-        String responseString = response.body().string();
-        JSONObject result = new JSONObject(responseString);
+        String response = API.makeRequest("/users/%s/%s", id, mode);
+        JSONObject result = new JSONObject(response);
         if(!result.isNull("authentication"))
             throw new InvalidTokenException("token wrong");
         if(!result.isNull("error"))
@@ -68,24 +61,17 @@ public class OsuClient {
      * @throws NotFoundException if user not found
      */
     public Score[] getUserScores(String id, ScoreType type, boolean includeFails, Mode mode) throws IOException, InvalidTokenException, NotFoundException {
-        Request request = new Request.Builder()
-                .url(String.format("https://osu.ppy.sh/api/v2/users/%s/scores/%s?include_fails=%c&mode=%s",
-                        id,
-                        type.getName(),
-                        includeFails ? 1 : 0,
-                        mode.getName()
-                ))
-                .headers(oauth.header())
-                .build();
-        Response response = httpClient.newCall(request).execute();
-        String responseString = response.body().string();
-        if(responseString.startsWith("{")) {
-            JSONObject result = new JSONObject(responseString);
+        String response = API.makeRequest("/users/%s/scores/%s?include_fails=%c&mode=%s", id,
+                type.getName(),
+                includeFails ? 1 : 0,
+                mode.getName());
+        if(response.startsWith("{")) {
+            JSONObject result = new JSONObject(response);
             if(!result.isNull("authentication"))
                 throw new InvalidTokenException("token wrong");
         }
         else {
-            JSONArray resultArray = new JSONArray(responseString);
+            JSONArray resultArray = new JSONArray(response);
             if(resultArray.length() == 0)
                 throw new NotFoundException();
             List<Score> scores = new ArrayList<>();
@@ -95,5 +81,15 @@ public class OsuClient {
             return scores.toArray(new Score[0]);
         }
         return null;
+    }
+
+    public Beatmap getBeatmap(String id) throws IOException, InvalidTokenException, NotFoundException {
+        String response = API.makeRequest("/beatmaps/%s", id);
+        JSONObject result = new JSONObject(response);
+        if(!result.isNull("authentication"))
+            throw new InvalidTokenException("token wrong");
+        if(!result.isNull("error"))
+            throw new NotFoundException();
+        return new Beatmap(result);
     }
 }
