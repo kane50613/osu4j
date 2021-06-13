@@ -6,7 +6,7 @@
 
     <groupId>tw.kane</groupId>
     <artifactId>osu4j</artifactId>
-    <version>v2.2</version>
+    <version>v2.3.1</version>
 
     <distributionManagement>
         <repository>
@@ -31,6 +31,18 @@
                     </execution>
                 </executions>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-jar-plugin</artifactId>-->
+<!--                    <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <addClasspath>true</addClasspath>-->
+<!--                            <mainClass>tw.kane.osu4j.Osu</mainClass>-->
+<!--                        </manifest>-->
+<!--                    </archive>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

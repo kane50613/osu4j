@@ -27,10 +27,12 @@ public class Beatmap {
 
     public Beatmap(String json) {
         object = JsonPath.parse(json);
+        init();
     }
 
     public Beatmap(JSONObject json) {
         object = JsonPath.parse(json.toString());
+        init();
     }
 
     public void init() {

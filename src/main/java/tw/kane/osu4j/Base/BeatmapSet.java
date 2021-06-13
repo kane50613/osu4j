@@ -18,10 +18,12 @@ public class BeatmapSet {
 
     public BeatmapSet(String json) {
         object = JsonPath.parse(json);
+        init();
     }
 
     public BeatmapSet(JSONObject json) {
         object = JsonPath.parse(json.toString());
+        init();
     }
 
     public void init() {
