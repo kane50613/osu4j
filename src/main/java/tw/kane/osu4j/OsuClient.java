@@ -85,7 +85,7 @@ public class OsuClient {
             }
             return scores.toArray(new Score[0]);
         }
-        return null;
+        throw new NotFoundException();
     }
 
     public Beatmap getBeatmap(String id) throws IOException, InvalidTokenException, NotFoundException {
