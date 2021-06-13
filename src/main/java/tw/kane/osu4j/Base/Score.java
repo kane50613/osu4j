@@ -46,7 +46,7 @@ public class Score {
         isPerfect = JSON.get(object, "$.perfect", Boolean.class, false);
         accuracy = JSON.get(object, "$.accuracy", Float.class, 0f);
         pp = JSON.get(object, "$.pp", Float.class, 0f);
-        mode = Mode.valueOf(JSON.get(object, "$.mode", String.class, "osu").toUpperCase());
+        mode = Mode.valueOf(JSON.get(object, "$.mode", String.class, "standard").toUpperCase());
         mods = _json.getJSONArray("mods").toList().toArray(new String[0]);
 
         try {

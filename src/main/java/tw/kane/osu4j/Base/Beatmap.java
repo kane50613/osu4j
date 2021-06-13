@@ -47,7 +47,7 @@ public class Beatmap {
         drain = JSON.get(object, "$.drain", Integer.class, 0);
         bpm = JSON.get(object, "$.bpm", Integer.class, 0);
         isRanked = JSON.get(object, "$.ranked", Integer.class, 0) == 1;
-        mode = Mode.valueOf(JSON.get(object, "$.mode", String.class, "osu").toUpperCase());
+        mode = Mode.valueOf(JSON.get(object, "$.mode", String.class, "standard").toUpperCase());
         rankedStatus = RankedStatus.valueOf(JSON.get(object, "$.status", String.class, "pending").toUpperCase());
 
         try {
