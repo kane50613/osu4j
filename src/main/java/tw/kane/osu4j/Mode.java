@@ -1,7 +1,7 @@
 package tw.kane.osu4j;
 
 public enum Mode {
-    OSU("osu"),
+    OSU("standard"),
     MANIA("mania"),
     CATCH("fruits"),
     TAIKO("taiko");

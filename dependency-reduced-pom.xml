@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>tw.kane</groupId>
   <artifactId>osu4j</artifactId>
-  <version>v2.3.1</version>
+  <version>v2.3.2</version>
   <build>
     <plugins>
       <plugin>
