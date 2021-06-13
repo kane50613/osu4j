@@ -19,8 +19,13 @@ try {
 replace `VERSION` with current version [![release](https://img.shields.io/github/v/release/Gary50613/osu4j?color=dark_green&include_prereleases)](https://github.com/Gary50613/osu4j/releases/latest)
 
 ```xml
+<repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+</repository>
+
 <dependency>
-    <groupId>tw.kane</groupId>
+    <groupId>com.github.Gary50613</groupId>
     <artifactId>osu4j</artifactId>
     <version>VERSION</version>
 </dependency>
