@@ -9,7 +9,7 @@ import tw.kane.osu4j.RankedStatus;
 public class BeatmapSet {
     private final DocumentContext object;
 
-    public String id, title, titleUnicode, artist, artistUnicode, creator, creatorId, previewUrl;
+    public String id, title, titleUnicode, artist, artistUnicode, creator, creatorId, previewUrl, cover;
     public boolean isNSFW, hasVideo;
 
     public RankedStatus rankedStatus;
@@ -37,6 +37,7 @@ public class BeatmapSet {
         previewUrl = JSON.get(object, "$.preview_url", String.class, null);
         isNSFW = JSON.get(object, "$.nsfw", Boolean.class, false);
         hasVideo = JSON.get(object, "$.video", Boolean.class, false);
+        cover = JSON.get(object, "$.covers.cover", String.class, null);
 
         rankedStatus = RankedStatus.valueOf(JSON.get(object, "$.status", String.class, "pending").toUpperCase());
 
